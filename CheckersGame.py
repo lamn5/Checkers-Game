@@ -16,31 +16,51 @@ class Checkers:
 
     def create_player(self, player_name, piece_color):
         """
-        
+        Takes two parameters:
+        player_name - represents the name of the player in the player object
+        piece_color - represents the color of the checker piece, either "Black" or "White"
+
+        Purpose of this method is to create a plyaer object so the checkers game can begin
+
+        Returns the player object
         """
         pass
 
     def play_game(self, player_name, starting_square_location, destination_square_location):
         """
-        
+        Takes three parameters:
+        player_name - represents the name of the player in the player object
+        starting_square_location - the square location at the start of turn, represented by a tuple (x,y)
+        destination_square_location - the square location at the end of turn, represented by a tuple (x,y)
+
+        Purpose of this method is to let the player choose where to move their checker piece so the game can be played.
+
+        Returns the number of captured pieces.
         """
         pass
 
     def get_checker_details(self, square_location):
         """
-        
+        Takes one parameter:
+        square_location - represents the location that the player want to check
+
+        Purpose of this method is to get the details of the location.
+
+        Returns what piece is at the square location.
         """
         pass
 
     def print_board(self):
         """
-
+        Prints out the current board as a form of array.
+        Purpose of this method is to see what the board looks like at the moment.
         """
         pass
 
     def game_winner(self):
         """
-        
+        Represents the game winner of the checkers game.
+        Returns the name of player who has won the game.
         """
         pass
 
@@ -56,18 +76,18 @@ class Player:
 
     def get_king_count(self):
         """
-        
+        Gets total amount of king pieces that the player have on the board. 
         """
         pass
 
     def get_triple_king_count(self):
         """
-        
+        Gets total amount of triple king pieces that the player have on the board. 
         """
         pass
 
     def captured_pieces_count(self):
         """
-        
+        Gets total amount of captured pieces that the player have done. 
         """
         pass

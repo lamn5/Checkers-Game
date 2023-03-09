@@ -100,6 +100,8 @@ class Player:
         """
         pass
 
-game = Checkers()
-# print(game.print_board())
-game.print_board()
+
+if __name__ == '__main__':
+
+    game = Checkers()
+    game.print_board()

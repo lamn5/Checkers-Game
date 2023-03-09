@@ -12,7 +12,14 @@ class Checkers:
         """
         Constructor for Checkers class. Takes no parameters. Initializes the board with the checkers in the correct positions. All data members are private.
         """
-        pass
+        self._board = [[None, "White", None, "White", None, "White", None, "White"],
+                       ["White", None, "White", None, "White", None, "White", None,],
+                       [None, "White", None, "White", None, "White", None, "White"],
+                       [None, None, None, None, None, None, None, None],
+                       [None, None, None, None, None, None, None, None],
+                       ["Black", None, "Black", None, "Black", None, "Black", None],
+                       [None, "Black", None, "Black", None, "Black", None, "Black"],
+                       ["Black", None, "Black", None, "Black", None, "Black", None]]
 
     def create_player(self, player_name, piece_color):
         """
@@ -55,7 +62,8 @@ class Checkers:
         Prints out the current board as a form of array.
         Purpose of this method is to see what the board looks like at the moment.
         """
-        pass
+        print(self._board)
+        return 
 
     def game_winner(self):
         """
@@ -91,3 +99,7 @@ class Player:
         Gets total amount of captured pieces that the player have done. 
         """
         pass
+
+game = Checkers()
+# print(game.print_board())
+game.print_board()

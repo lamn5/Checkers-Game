@@ -27,11 +27,15 @@ class Checkers:
         player_name - represents the name of the player in the player object
         piece_color - represents the color of the checker piece, either "Black" or "White"
 
-        Purpose of this method is to create a plyaer object so the checkers game can begin
+        Purpose of this method is to create a player object so the checkers game can begin
 
         Returns the player object
         """
-        pass
+        
+        self._player_name = player_name
+        self._piece_color = piece_color
+        return Player()
+        
 
     def play_game(self, player_name, starting_square_location, destination_square_location):
         """
@@ -82,6 +86,8 @@ class Player:
         """
         pass
 
+
+
     def get_king_count(self):
         """
         Gets total amount of king pieces that the player have on the board. 
@@ -105,3 +111,5 @@ if __name__ == '__main__':
 
     game = Checkers()
     game.print_board()
+    Player1 = game.create_player("Adam", "White")
+    print(Player1)

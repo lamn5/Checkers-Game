@@ -28,7 +28,10 @@ class TestCheckersGame(unittest.TestCase):
 
     def test_game_winner(self):
         """tests that the correct game winner is returned"""
-        
+        game = Checkers()
+        Player1 = game.create_player("Adam", "White")
+        Player2 = game.create_player("Lucy", "Black" )
+        self.assertEqual(game.game_winner(), "Game has not ended")
 
 if __name__ == '__main__':
     unittest.main()

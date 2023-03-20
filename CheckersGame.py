@@ -35,6 +35,9 @@ class Checkers:
                        ["Black", None, "Black", None, "Black", None, "Black", None]]
         self._previous_player = None
         self._players = {}
+        self._captured_pieces_dict = {}
+        self._captured_pieces = 0
+        self._winner = None
 
     def create_player(self, player_name, piece_color):
         """
@@ -49,6 +52,7 @@ class Checkers:
         self._player_name = player_name
         self._piece_color = piece_color
         self._players[self._player_name] = self._piece_color
+        self._captured_pieces_dict[player_name] = 0
         return Player(self._player_name, self._piece_color)
         
     def play_game(self, player_name, starting_square_location, destination_square_location):
@@ -62,6 +66,7 @@ class Checkers:
 
         Returns the number of captured pieces.
         """
+        
         # if player name is not valid, raise error
         for name in game._players:
             if player_name not in game._players:
@@ -78,17 +83,20 @@ class Checkers:
         if game.get_checker_details(destination_square_location) != None:   
             raise InvalidSquareError
         # if square location doesn't exist, raise error
-        row_num = int(starting_square_location[0])
-        col_num = int(starting_square_location[1])
-        if row_num > len(self._board) - 1 or col_num > len(self._board) - 1:
+        start_row_num = int(starting_square_location[0])
+        start_col_num = int(starting_square_location[1])
+        if start_row_num > len(self._board) - 1 or start_col_num > len(self._board) - 1:
             raise InvalidSquareError
-        row_num = int(destination_square_location[0])
-        col_num = int(destination_square_location[1])
-        if row_num > len(self._board) - 1 or col_num > len(self._board) - 1:
+        end_row_num = int(destination_square_location[0])
+        end_col_num = int(destination_square_location[1])
+        if end_row_num > len(self._board) - 1 or end_col_num > len(self._board) - 1:
             raise InvalidSquareError
         
-        self._board[row_num][col_num] = game._players[player_name]
+        self._board[start_row_num][start_col_num] = None
+        self._board[end_row_num][end_col_num] = game._players[player_name]
         
+        if self._captured_pieces_dict[player_name] == 12:
+            self._winner = player_name
 
         pass
     
@@ -133,7 +141,10 @@ class Checkers:
         Represents the game winner of the checkers game.
         Returns the name of player who has won the game.
         """
-        pass
+        if self._winner == None:
+            print("Game has not ended")
+        else:
+            return self._winner
 
 class Player:
     """

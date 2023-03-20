@@ -4,15 +4,15 @@
 # Date: 03/19/2023
 # Description: The program contains a Checkers game that takes two players and allows them to play the game.
 
-class OutofTurnError(Exception):
+class OutofTurn(Exception):
     """Error raised when a player attempts to move out of turn"""
     pass
 
-class InvalidSquareError(Exception):
+class InvalidSquare(Exception):
     """Error raised when a player does not own the square or the location does not exist"""
     pass
 
-class InvalidPlayerError(Exception):
+class InvalidPlayer(Exception):
     """Error raised when a player's name is invalid"""
     pass
 
@@ -71,27 +71,27 @@ class Checkers:
         # if player name is not valid, raise error
         for name in self._players:
             if player_name not in self._players:
-                raise InvalidPlayerError
+                raise InvalidPlayer
         # if the previous player is same as player now, raise error
         if self.get_previous_player() == player_name:   
-            raise OutofTurnError
+            raise OutofTurn
         self.set_previous_player(player_name)
 
         # if the players piece color does not equal to its starting square location, raise error
         if self._players[player_name] != self.get_checker_details(starting_square_location): 
-            raise InvalidSquareError
+            raise InvalidSquare
         # if there is something at destination then raise error
         if self.get_checker_details(destination_square_location) != None:   
-            raise InvalidSquareError
+            raise InvalidSquare
         # if square location doesn't exist, raise error
         start_row_num = int(starting_square_location[0])
         start_col_num = int(starting_square_location[1])
         if start_row_num > len(self._board) - 1 or start_col_num > len(self._board) - 1:
-            raise InvalidSquareError
+            raise InvalidSquare
         end_row_num = int(destination_square_location[0])
         end_col_num = int(destination_square_location[1])
         if end_row_num > len(self._board) - 1 or end_col_num > len(self._board) - 1:
-            raise InvalidSquareError
+            raise InvalidSquare
         
         self._board[start_row_num][start_col_num] = None
         self._board[end_row_num][end_col_num] = self._players[player_name]
@@ -145,7 +145,7 @@ class Checkers:
         row_num = int(square_location[0])
         col_num = int(square_location[1])
         if row_num > len(self._board) - 1 or col_num > len(self._board) - 1:
-            raise InvalidSquareError
+            raise InvalidSquare
         else:
             return self._board[row_num][col_num]
         

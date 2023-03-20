@@ -34,6 +34,7 @@ class Checkers:
                        [None, "Black", None, "Black", None, "Black", None, "Black"],
                        ["Black", None, "Black", None, "Black", None, "Black", None]]
         self._previous_player = None
+        self._players = {}
 
     def create_player(self, player_name, piece_color):
         """
@@ -47,9 +48,9 @@ class Checkers:
         """
         self._player_name = player_name
         self._piece_color = piece_color
+        self._players[self._player_name] = self._piece_color
         return Player(self._player_name, self._piece_color)
         
-
     def play_game(self, player_name, starting_square_location, destination_square_location):
         """
         Takes three parameters:
@@ -64,7 +65,7 @@ class Checkers:
         if game.get_previous_player() == player_name:
             raise OutofTurnError
         game.set_previous_player(player_name)
-        
+        # if game.get_checker_details(starting_square_location) != 
         
         pass
     
@@ -121,14 +122,6 @@ class Player:
         """
         self._player_name = player_name
         self._piece_color = piece_color
-        self._player = [self._player_name, self._piece_color]
-
-
-    def get_player_name(self):
-        return self._player_name
-    
-    def get_piece_color(self):
-        return self._piece_color
     
     def get_king_count(self):
         """
@@ -161,3 +154,4 @@ if __name__ == '__main__':
     print(game.get_player_name(Player2))
     print(game.get_piece_color(Player1))
     print(game.get_piece_color(Player2))
+    print(game._players)

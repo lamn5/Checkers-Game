@@ -4,6 +4,19 @@
 # Date: 03/19/2023
 # Description: 
 
+class OutofTurnError(Exception):
+    """Error raised when a player attempts to move out of turn"""
+    pass
+
+class InvalidSquareError(Exception):
+    """Error raised when a player does not own the square or the location does not exist"""
+    pass
+
+class InvalidPlayerError(Exception):
+    """Error raised when a player's name is invalid"""
+    pass
+
+
 class Checkers:
     """
     Checkers class to represent the checkers game which contains two players. Player with black checkers always start first. Contains methods that return the number of captured pieces, name of winner, and details of a particular square. Uses the Player class to store information about the player and its pieces.
@@ -84,10 +97,17 @@ class Player:
         """
         Constructor for Player class. Takes no parameters. Initializes the player's name and piece color. All data members are private.
         """
-        pass
+        # self._player = [self._player_name, self._piece_color]
+        self._player_name = ()
+        self._piece_color = ()
 
 
-
+    def get_player_name(self):
+        return self._player_name
+    
+    def get_piece_color(self):
+        return self._piece_color
+    
     def get_king_count(self):
         """
         Gets total amount of king pieces that the player have on the board. 

@@ -69,19 +69,19 @@ class Checkers:
         """
         
         # if player name is not valid, raise error
-        for name in game._players:
-            if player_name not in game._players:
+        for name in self._players:
+            if player_name not in self._players:
                 raise InvalidPlayerError
         # if the previous player is same as player now, raise error
-        if game.get_previous_player() == player_name:   
+        if self.get_previous_player() == player_name:   
             raise OutofTurnError
-        game.set_previous_player(player_name)
+        self.set_previous_player(player_name)
 
         # if the players piece color does not equal to its starting square location, raise error
-        if game._players[player_name] != game.get_checker_details(starting_square_location): 
+        if self._players[player_name] != self.get_checker_details(starting_square_location): 
             raise InvalidSquareError
         # if there is something at destination then raise error
-        if game.get_checker_details(destination_square_location) != None:   
+        if self.get_checker_details(destination_square_location) != None:   
             raise InvalidSquareError
         # if square location doesn't exist, raise error
         start_row_num = int(starting_square_location[0])
@@ -94,9 +94,9 @@ class Checkers:
             raise InvalidSquareError
         
         self._board[start_row_num][start_col_num] = None
-        self._board[end_row_num][end_col_num] = game._players[player_name]
+        self._board[end_row_num][end_col_num] = self._players[player_name]
 
-        if game._players[player_name] == "Black":   
+        if self._players[player_name] == "Black":   
             if start_row_num - end_row_num == 2: # if the piece skipped a row
                 if start_col_num - end_col_num == 2:  # left side
                     self._board[start_row_num - 1][start_col_num - 1] = None
@@ -109,7 +109,7 @@ class Checkers:
             if end_row_num == 7:            # Turns into triple king
                 self._triple_king_count_dict[player_name] += 1
 
-        if game._players[player_name] == "White":
+        if self._players[player_name] == "White":
             if start_row_num - end_row_num == -2: # if the piece skipped a row
                 if start_col_num - end_col_num == -2:  # left side
                     self._board[start_row_num + 1][start_col_num + 1] = None

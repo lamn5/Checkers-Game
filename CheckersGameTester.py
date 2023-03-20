@@ -1,5 +1,5 @@
 import unittest
-from CheckersGame import Checkers, Player
+from CheckersGame import Checkers, Player, InvalidSquareError
 
 class TestCheckersGame(unittest.TestCase):
 
@@ -11,6 +11,13 @@ class TestCheckersGame(unittest.TestCase):
         """tests that the get_checker_details function returns the correct piece detail at the correct location"""
         game = Checkers()
         self.assertEqual(game.get_checker_details((1,6)), 'White')
+    
+    def test_invalid_square_raises_successfully(self):
+        """tests to verify InvalidSquareError is raised"""
+        game = Checkers()
+        with self.assertRaises(InvalidSquareError):
+            game.get_checker_details((8,6))
+
 
 
 if __name__ == '__main__':

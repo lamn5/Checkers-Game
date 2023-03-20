@@ -62,11 +62,34 @@ class Checkers:
 
         Returns the number of captured pieces.
         """
-        if game.get_previous_player() == player_name:
+        # if player name is not valid, raise error
+        for name in game._players:
+            if player_name not in game._players:
+                raise InvalidPlayerError
+        # if the previous player is same as player now, raise error
+        if game.get_previous_player() == player_name:   
             raise OutofTurnError
         game.set_previous_player(player_name)
-        # if game.get_checker_details(starting_square_location) != 
+
+        # if the players piece color does not equal to its starting square location, raise error
+        if game._players[player_name] != game.get_checker_details(starting_square_location): 
+            raise InvalidSquareError
+        # if there is something at destination then raise error
+        if game.get_checker_details(destination_square_location) != None:   
+            raise InvalidSquareError
+        # if square location doesn't exist, raise error
+        row_num = int(starting_square_location[0])
+        col_num = int(starting_square_location[1])
+        if row_num > len(self._board) - 1 or col_num > len(self._board) - 1:
+            raise InvalidSquareError
+        row_num = int(destination_square_location[0])
+        col_num = int(destination_square_location[1])
+        if row_num > len(self._board) - 1 or col_num > len(self._board) - 1:
+            raise InvalidSquareError
         
+        self._board[row_num][col_num] = game._players[player_name]
+        
+
         pass
     
     def set_previous_player(self, player_name):
@@ -148,10 +171,14 @@ if __name__ == '__main__':
     game.print_board()
     Player1 = game.create_player("Adam", "White")
     Player2 = game.create_player("Lucy", "Black" )
+    print(game.get_checker_details((4,7)))
+    print(game.get_checker_details((3,0)))
     game.play_game("Lucy", (5,6),(4,7))
-    # game.play_game("Lucy", (5,6),(4,7))
-    print(game.get_player_name(Player1))
-    print(game.get_player_name(Player2))
-    print(game.get_piece_color(Player1))
-    print(game.get_piece_color(Player2))
+    game.play_game("Adam", (2,1),(3,0))
+    # print(game.get_player_name(Player1))
+    # print(game.get_player_name(Player2))
+    # print(game.get_piece_color(Player1))
+    # print(game.get_piece_color(Player2))
     print(game._players)
+    print(game.get_checker_details((4,7)))
+    print(game.get_checker_details((3,0)))

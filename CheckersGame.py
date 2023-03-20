@@ -140,4 +140,4 @@ if __name__ == '__main__':
     game.print_board()
     Player1 = game.create_player("Adam", "White")
     print(Player1)
-    print(game.get_checker_details((1,8)))
+    print(game.get_checker_details((1,6)))

@@ -33,6 +33,7 @@ class Checkers:
                        ["Black", None, "Black", None, "Black", None, "Black", None],
                        [None, "Black", None, "Black", None, "Black", None, "Black"],
                        ["Black", None, "Black", None, "Black", None, "Black", None]]
+        self._previous_player = None
 
     def create_player(self, player_name, piece_color):
         """
@@ -44,8 +45,9 @@ class Checkers:
 
         Returns the player object
         """
-        
-        return Player(player_name, piece_color)
+        self._player_name = player_name
+        self._piece_color = piece_color
+        return Player(self._player_name, self._piece_color)
         
 
     def play_game(self, player_name, starting_square_location, destination_square_location):
@@ -59,8 +61,19 @@ class Checkers:
 
         Returns the number of captured pieces.
         """
+        if game.get_previous_player() == player_name:
+            raise OutofTurnError
+        game.set_previous_player(player_name)
+        
+        
         pass
+    
+    def set_previous_player(self, player_name):
+        self._previous_player = player_name
 
+    def get_previous_player(self):
+        return self._previous_player
+    
     def get_checker_details(self, square_location):
         """
         Takes one parameter:
@@ -77,7 +90,11 @@ class Checkers:
         else:
             return self._board[row_num][col_num]
         
-        
+    def get_player_name(self, player_object):
+        return player_object._player_name
+    
+    def get_piece_color(self, player_object):
+        return player_object._piece_color
 
     def print_board(self):
         """
@@ -138,4 +155,9 @@ if __name__ == '__main__':
     game.print_board()
     Player1 = game.create_player("Adam", "White")
     Player2 = game.create_player("Lucy", "Black" )
+    game.play_game("Lucy", (5,6),(4,7))
     # game.play_game("Lucy", (5,6),(4,7))
+    print(game.get_player_name(Player1))
+    print(game.get_player_name(Player2))
+    print(game.get_piece_color(Player1))
+    print(game.get_piece_color(Player2))

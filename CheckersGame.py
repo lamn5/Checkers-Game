@@ -45,9 +45,7 @@ class Checkers:
         Returns the player object
         """
         
-        self._player_name = player_name
-        self._piece_color = piece_color
-        return Player()
+        return Player(player_name, piece_color)
         
 
     def play_game(self, player_name, starting_square_location, destination_square_location):
@@ -100,13 +98,13 @@ class Player:
     """
     Player class to represent each player that is playing the game. Contains information such as the player's name and its piece color. Used by the Checkers class.
     """
-    def __init_(self):
+    def __init__(self, player_name, piece_color):
         """
         Constructor for Player class. Takes no parameters. Initializes the player's name and piece color. All data members are private.
         """
-        # self._player = [self._player_name, self._piece_color]
-        self._player_name = ()
-        self._piece_color = ()
+        self._player_name = player_name
+        self._piece_color = piece_color
+        self._player = [self._player_name, self._piece_color]
 
 
     def get_player_name(self):
@@ -139,5 +137,5 @@ if __name__ == '__main__':
     game = Checkers()
     game.print_board()
     Player1 = game.create_player("Adam", "White")
-    print(Player1)
-    print(game.get_checker_details((1,6)))
+    Player2 = game.create_player("Lucy", "Black" )
+    # game.play_game("Lucy", (5,6),(4,7))

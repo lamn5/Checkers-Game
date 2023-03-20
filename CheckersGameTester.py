@@ -24,7 +24,7 @@ class TestCheckersGame(unittest.TestCase):
         game = Checkers()
         Player1 = game.create_player("Adam", "White")
         game.play_game("Adam", (2,1),(3,0))
-        self.assertEqual(game.get_checker_details((3,0)),'White')
+        self.assertEqual(game.get_checker_details((3,0)),"White")
 
     def test_game_winner(self):
         """tests that the correct game winner is returned"""

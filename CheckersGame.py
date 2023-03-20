@@ -37,7 +37,7 @@ class Checkers:
         self._players = {}
         self._captured_pieces_dict = {}
         self._king_count_dict = {}
-        self.triple_king_count_dict = {}
+        self._triple_king_count_dict = {}
         self._winner = None
 
     def create_player(self, player_name, piece_color):
@@ -104,6 +104,10 @@ class Checkers:
                 if start_col_num - end_col_num == - 2: # right side
                     self._board[start_row_num - 1][start_col_num + 1] = None
                     self._captured_pieces_dict[player_name] += 1
+            if end_row_num == 0:        # Turns into king
+                self._king_count_dict[player_name] += 1
+            if end_row_num == 7:            # Turns into triple king
+                self._triple_king_count_dict[player_name] += 1
 
         if game._players[player_name] == "White":
             if start_row_num - end_row_num == -2: # if the piece skipped a row
@@ -113,6 +117,10 @@ class Checkers:
                 if start_col_num - end_col_num == 2: # right side
                     self._board[start_row_num + 1][start_col_num - 1] = None
                     self._captured_pieces_dict[player_name] += 1
+            if end_row_num == 7:            # Turns into king
+                self._king_count_dict[player_name] += 1
+            if end_row_num == 0:            # Turns into triple king
+                self._triple_king_count_dict[player_name] += 1
 
         if self._captured_pieces_dict[player_name] == 12:
             self._winner = player_name
@@ -180,13 +188,13 @@ class Player:
         """
         Gets total amount of king pieces that the player have on the board. 
         """
-        pass
+        return self._king_count_dict[self._player_name]
 
     def get_triple_king_count(self):
         """
         Gets total amount of triple king pieces that the player have on the board. 
         """
-        pass
+        return self._triple_king_count_dict[self._player_name]
 
     def captured_pieces_count(self):
         """
@@ -194,26 +202,3 @@ class Player:
         """
         return self._captured_pieces_dict[self._player_name]
 
-
-
-if __name__ == '__main__':
-
-    game = Checkers()
-    game.print_board()
-    Player1 = game.create_player("Adam", "White")
-    Player2 = game.create_player("Lucy", "Black" )
-    print(game.get_checker_details((4,7)))
-    print(game.get_checker_details((3,6)))
-    game.play_game("Lucy", (5,6),(4,7))
-    game.play_game("Adam", (2,1),(3,0))
-    game.play_game("Lucy", (4,7),(3,6))
-    print(game.get_checker_details((3,6)))
-    game.play_game("Adam", (2,7),(4,5))
-    print(game.get_checker_details((3,6)))
-    # print(game.get_player_name(Player1))
-    # print(game.get_player_name(Player2))
-    # print(game.get_piece_color(Player1))
-    # print(game.get_piece_color(Player2))
-    print(game._players)
-    print(game.get_checker_details((4,7)))
-    print(game.get_checker_details((3,0)))

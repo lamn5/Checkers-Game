@@ -72,7 +72,14 @@ class Checkers:
 
         Returns what piece is at the square location.
         """
-        pass
+        row_num = int(square_location[0])
+        col_num = int(square_location[1])
+        if row_num > len(self._board) - 1 or col_num > len(self._board) - 1:
+            raise InvalidSquareError
+        else:
+            return self._board[row_num][col_num]
+        
+        
 
     def print_board(self):
         """
@@ -133,3 +140,4 @@ if __name__ == '__main__':
     game.print_board()
     Player1 = game.create_player("Adam", "White")
     print(Player1)
+    print(game.get_checker_details((1,8)))

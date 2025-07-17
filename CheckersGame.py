@@ -1,4 +1,4 @@
-# portfolio-project
+# Checkers Game - CS 162 Project
 # Author: Noddy Lam
 # GitHub username: lamn5
 # Date: 03/19/2023
@@ -8,9 +8,11 @@ class OutofTurn(Exception):
     """Error raised when a player attempts to move out of turn"""
     pass
 
+
 class InvalidSquare(Exception):
     """Error raised when a player does not own the square or the location does not exist"""
     pass
+
 
 class InvalidPlayer(Exception):
     """Error raised when a player's name is invalid"""
@@ -21,12 +23,14 @@ class Checkers:
     """
     Checkers class to represent the checkers game which contains two players. Player with black checkers always start first. Contains methods that return the number of captured pieces, name of winner, and details of a particular square. Uses the Player class to store information about the player and its pieces.
     """
+
     def __init__(self):
         """
         Constructor for Checkers class. Takes no parameters. Initializes the board with the checkers in the correct positions. All data members are private.
         """
         self._board = [[None, "White", None, "White", None, "White", None, "White"],
-                       ["White", None, "White", None, "White", None, "White", None,],
+                       ["White", None, "White", None,
+                           "White", None, "White", None,],
                        [None, "White", None, "White", None, "White", None, "White"],
                        [None, None, None, None, None, None, None, None],
                        [None, None, None, None, None, None, None, None],
@@ -55,7 +59,7 @@ class Checkers:
         self._players[self._player_name] = self._piece_color
         self._captured_pieces_dict[player_name] = 0
         return Player(self._player_name, self._piece_color)
-        
+
     def play_game(self, player_name, starting_square_location, destination_square_location):
         """
         Takes three parameters:
@@ -67,21 +71,21 @@ class Checkers:
 
         Returns the number of captured pieces.
         """
-        
+
         # if player name is not valid, raise error
         for name in self._players:
             if player_name not in self._players:
                 raise InvalidPlayer
         # if the previous player is same as player now, raise error
-        if self.get_previous_player() == player_name:   
+        if self.get_previous_player() == player_name:
             raise OutofTurn
         self.set_previous_player(player_name)
 
         # if the players piece color does not equal to its starting square location, raise error
-        if self._players[player_name] != self.get_checker_details(starting_square_location): 
+        if self._players[player_name] != self.get_checker_details(starting_square_location):
             raise InvalidSquare
         # if there is something at destination then raise error
-        if self.get_checker_details(destination_square_location) != None:   
+        if self.get_checker_details(destination_square_location) != None:
             raise InvalidSquare
         # if square location doesn't exist, raise error
         start_row_num = int(starting_square_location[0])
@@ -92,16 +96,16 @@ class Checkers:
         end_col_num = int(destination_square_location[1])
         if end_row_num > len(self._board) - 1 or end_col_num > len(self._board) - 1:
             raise InvalidSquare
-        
+
         self._board[start_row_num][start_col_num] = None
         self._board[end_row_num][end_col_num] = self._players[player_name]
 
-        if self._players[player_name] == "Black":   
-            if start_row_num - end_row_num == 2: # if the piece skipped a row
+        if self._players[player_name] == "Black":
+            if start_row_num - end_row_num == 2:  # if the piece skipped a row
                 if start_col_num - end_col_num == 2:  # left side
                     self._board[start_row_num - 1][start_col_num - 1] = None
                     self._captured_pieces_dict[player_name] += 1
-                if start_col_num - end_col_num == - 2: # right side
+                if start_col_num - end_col_num == - 2:  # right side
                     self._board[start_row_num - 1][start_col_num + 1] = None
                     self._captured_pieces_dict[player_name] += 1
             if end_row_num == 0:        # Turns into king
@@ -110,11 +114,11 @@ class Checkers:
                 self._triple_king_count_dict[player_name] += 1
 
         if self._players[player_name] == "White":
-            if start_row_num - end_row_num == -2: # if the piece skipped a row
+            if start_row_num - end_row_num == -2:  # if the piece skipped a row
                 if start_col_num - end_col_num == -2:  # left side
                     self._board[start_row_num + 1][start_col_num + 1] = None
                     self._captured_pieces_dict[player_name] += 1
-                if start_col_num - end_col_num == 2: # right side
+                if start_col_num - end_col_num == 2:  # right side
                     self._board[start_row_num + 1][start_col_num - 1] = None
                     self._captured_pieces_dict[player_name] += 1
             if end_row_num == 7:            # Turns into king
@@ -126,13 +130,13 @@ class Checkers:
             self._winner = player_name
 
         return self._captured_pieces_dict[player_name]
-    
+
     def set_previous_player(self, player_name):
         self._previous_player = player_name
 
     def get_previous_player(self):
         return self._previous_player
-    
+
     def get_checker_details(self, square_location):
         """
         Takes one parameter:
@@ -148,10 +152,10 @@ class Checkers:
             raise InvalidSquare
         else:
             return self._board[row_num][col_num]
-        
+
     def get_player_name(self, player_object):
         return player_object._player_name
-    
+
     def get_piece_color(self, player_object):
         return player_object._piece_color
 
@@ -161,7 +165,7 @@ class Checkers:
         Purpose of this method is to see what the board looks like at the moment.
         """
         print(self._board)
-        return 
+        return
 
     def game_winner(self):
         """
@@ -173,17 +177,19 @@ class Checkers:
         else:
             return self._winner
 
+
 class Player:
     """
     Player class to represent each player that is playing the game. Contains information such as the player's name and its piece color. Used by the Checkers class.
     """
+
     def __init__(self, player_name, piece_color):
         """
         Constructor for Player class. Takes no parameters. Initializes the player's name and piece color. All data members are private.
         """
         self._player_name = player_name
         self._piece_color = piece_color
-    
+
     def get_king_count(self):
         """
         Gets total amount of king pieces that the player have on the board. 
@@ -201,4 +207,3 @@ class Player:
         Gets total amount of captured pieces that the player have done. 
         """
         return self._captured_pieces_dict[self._player_name]
-

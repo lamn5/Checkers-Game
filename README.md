@@ -1,68 +1,227 @@
-# portfolio-project
+# How to Play Checkers
 
-For this project you will write a class called Checkers that allows two people to play the game of Checkers. This is a variation of the original Checkers game with modified rules. 
-Read about the Game rules in Checkers.pdf
+Welcome to the Checkers Game! This guide will help you understand the rules and how to play.
 
+## Game Overview
 
-**Checkers:**
+Checkers is a two-player strategy board game played on an 8x8 board. One player controls **Black** pieces, and the other controls **White** pieces. The goal is to capture all of your opponent's pieces.
 
-The Checkers object represents the game as played. 
+## Setup
 
-The class should contain information about the board and the players. The board is initialized when the Checkers object is created.
+The game board is set up with:
+- **White pieces** on rows 0-2 (top of the board)
+- **Black pieces** on rows 5-7 (bottom of the board)
+- Pieces are placed on alternating squares (checkerboard pattern)
+- **Black always moves first**
 
-It must contain these methods (but may have more if you want):
-* create_player - takes as parameter the player_name and piece_color that the player wants to play with and creates the player object. The parameter piece_color is a string of value "Black" or "White" representing Black or White checkers pieces respectively. This function returns the player object that has been created.
+## Board Coordinates
 
-* play_game - takes as parameter player_name, starting_square_location and destination_square_location of the piece that the player wants to move. The square_location is a tuple in format (x,y). If a player wants to move a piece from third square in the second row to fourth square in the fifth row, the starting and destination square locations will be (1,2) to (4,3). Following the rules of the game move this piece.
-    
-    * If a player attempts to move a piece out of turn, raise an OutofTurn exception (you'll need to define this exception class).
-    * If a player does not own the checker present in the square_location or if the square_location does not exist on the baord; raise an InvalidSquare exception (you'll need to define this exception class).
-    * If the player_name is not valid, raise an InvalidPlayer exception (you'll need to define this exception class).
-    * This method returns the number of captured pieces, if any, otherwise return 0.
-    * If the destination piece reaches the end of opponent's side it is promoted as a king on the board. If the piece crosses back to its original side it becomes a triple king.
-    * If the piece being moved is a king or a triple king assess the move according to the rules of the game.
-  
-* get_checker_details - takes as parameter a square_location on the board and returns the checker details present in the square_location
-    * Returns None, if no piece is present in the location
-    * If the square_location does not exist on the board, raise an InvalidSquare exception (use the same exception class that was created for play_game function). 
-    * If black piece is present return "Black"
-    * If white piece is present return "White"
-    * If black king piece is present return "Black_king"
-    * If white king piece is present return "White_king"
-    * If black triple king piece is present return "Black_Triple_King"
-    * If white triple king piece is present return "White_Triple_King"
-  
+The board uses coordinate system (row, column) where:
+- Rows and columns are numbered 0-7
+- Example: `(5, 0)` means row 5, column 0
+- Top-left corner is `(0, 0)`
+- Bottom-right corner is `(7, 7)`
 
-* print_board - takes no parameter, prints the current board in the form of an array. Below is an example showing the current board in the initial state (Note, here only the first row is printed, you would print the entire board)
+```
+   0   1   2   3   4   5   6   7
+0  -   W   -   W   -   W   -   W
+1  W   -   W   -   W   -   W   -
+2  -   W   -   W   -   W   -   W
+3  -   -   -   -   -   -   -   -
+4  -   -   -   -   -   -   -   -
+5  B   -   B   -   B   -   B   -
+6  -   B   -   B   -   B   -   B
+7  B   -   B   -   B   -   B   -
 
-  [[None, "White", None, "White", None, "White", None, "White"],....]
+W = White piece
+B = Black piece
+- = Empty square
+```
 
-*game_winner - takes no parameter, returns the name of player who won the game.
-  If the game has not ended, return "Game has not ended". In this function you need not check this condition - "A less common way to win is when all of your opponent's pieces are blocked so that your opponent can't make any more moves."
+## Basic Rules
 
-**Player:**
+### 1. **Taking Turns**
+- Black player moves first
+- Players alternate turns
+- You cannot move twice in a row
 
-Player object represents the player in the game. It is initialized with player_name and checker_color that the player has chosen. The parameter piece_color is a string of value "Black" or "White".
+### 2. **Regular Piece Movement**
+- Regular pieces move **diagonally forward** one square
+- Black pieces move toward row 0 (upward)
+- White pieces move toward row 7 (downward)
+- You can only move to empty squares
 
-* get_king_count - takes no parameter, returns the number of king pieces that the player has
-* get_triple_king_count - takes no parameter, returns the number of triple king pieces that the player has
-* get_captured_pieces_count - takes no parameter, returns the number of opponent pieces that the player has captured
+### 3. **Capturing Pieces**
+- Jump over an opponent's piece diagonally to capture it
+- The jumped piece is removed from the board
+- Captures move 2 rows diagonally (skipping the opponent's piece)
+- You can capture left or right diagonally
 
-In addition to your file containing the code for the above classes, **you must also submit a file that contains unit tests for your classes.  It must have at least five unit tests and use at least two different assert functions.  
+**Example Capture:**
+```
+Black at (4, 1) can capture White at (3, 2) by jumping to (2, 3)
+```
 
-Your files must be named **CheckersGame.py** and **CheckersGameTester.py**
+### 4. **King Pieces**
+When a piece reaches the opposite end of the board:
+- **Black piece reaching row 0** → becomes a **King**
+- **White piece reaching row 7** → becomes a **King**
 
-For example, your classes will be used as below:
+Kings have special abilities (can move in different directions).
 
+### 5. **Triple King Pieces**
+If a piece crosses back to its original side:
+- **Black King reaching row 7** → becomes a **Triple King**
+- **White King reaching row 0** → becomes a **Triple King**
+
+Triple Kings have even more powerful abilities.
+
+### 6. **Winning the Game**
+The first player to **capture 12 opponent pieces wins** the game!
+
+## How to Play (Code Example)
+
+### Step 1: Create a Game and Players
+
+```python
+from CheckersGame import Checkers
+
+# Create a new game
 game = Checkers()
-Player1 = game.create_player("Adam", "White")
 
-Player2 = game.create_player("Lucy", "Black")
+# Create two players
+player1 = game.create_player("Alice", "Black")
+player2 = game.create_player("Bob", "White")
+```
 
-game.play_game("Lucy", (5, 6), (4, 7))
+### Step 2: Make Moves
 
-game.play_game("Adam", (2,1), (3,0))
+```python
+# Black player moves first
+# Move piece from (5, 0) to (4, 1)
+captured = game.play_game("Alice", (5, 0), (4, 1))
+print(f"Alice captured {captured} pieces")
 
-game.get_checker_details((3,1))
+# White player's turn
+captured = game.play_game("Bob", (2, 1), (3, 0))
+print(f"Bob captured {captured} pieces")
+```
 
-Player1.get_captured_pieces_count()
+### Step 3: View the Board
+
+```python
+# Print the current board state
+game.print_board()
+```
+
+### Step 4: Check Square Details
+
+```python
+# Check what's at a specific square
+piece = game.get_checker_details((4, 1))
+print(f"Square (4,1) has: {piece}")
+# Returns: "Black", "White", "Black_king", "White_king",
+#          "Black_Triple_King", "White_Triple_King", or None
+```
+
+### Step 5: Check Player Statistics
+
+```python
+# Get player statistics
+captured = player1.get_captured_pieces_count()
+kings = player1.get_king_count()
+triple_kings = player1.get_triple_king_count()
+
+print(f"Alice has captured {captured} pieces")
+print(f"Alice has {kings} kings")
+print(f"Alice has {triple_kings} triple kings")
+```
+
+### Step 6: Check for a Winner
+
+```python
+# Check if there's a winner
+winner = game.game_winner()
+print(f"Winner: {winner}")
+# Returns player name or "Game has not ended"
+```
+
+## Complete Game Example
+
+```python
+from CheckersGame import Checkers
+
+# Setup
+game = Checkers()
+alice = game.create_player("Alice", "Black")
+bob = game.create_player("Bob", "White")
+
+print("=== Starting Checkers Game ===\n")
+
+# Turn 1: Black moves
+game.play_game("Alice", (5, 0), (4, 1))
+print("Turn 1: Alice moved (5,0) → (4,1)")
+game.print_board()
+
+# Turn 2: White moves
+game.play_game("Bob", (2, 3), (3, 2))
+print("\nTurn 2: Bob moved (2,3) → (3,2)")
+game.print_board()
+
+# Turn 3: Black captures White
+captured = game.play_game("Alice", (4, 1), (2, 3))
+print(f"\nTurn 3: Alice captured a piece! Total captures: {captured}")
+game.print_board()
+
+# Check statistics
+print(f"\nAlice's captures: {alice.get_captured_pieces_count()}")
+print(f"Bob's captures: {bob.get_captured_pieces_count()}")
+
+# Check winner
+print(f"Game status: {game.game_winner()}")
+```
+
+## Common Errors
+
+### OutofTurn
+**Error:** A player tries to move when it's not their turn
+```python
+game.play_game("Alice", (5, 0), (4, 1))
+game.play_game("Alice", (5, 2), (4, 3))  # ERROR: Alice just moved!
+```
+
+### InvalidPlayer
+**Error:** Player name doesn't exist
+```python
+game.play_game("Charlie", (5, 0), (4, 1))  # ERROR: Charlie not created!
+```
+
+### InvalidSquare
+**Error:** Invalid move attempted
+- Moving from an empty square
+- Moving an opponent's piece
+- Moving to an occupied square
+- Moving outside the board (coordinates > 7 or < 0)
+
+```python
+game.play_game("Alice", (3, 3), (4, 4))  # ERROR: No piece at (3,3)
+game.play_game("Alice", (2, 1), (3, 0))  # ERROR: (2,1) has White piece, not Black
+```
+
+## Tips for Playing
+
+1. **Plan your moves** - Think ahead about captures and promotions
+2. **Protect your pieces** - Don't leave pieces vulnerable to capture
+3. **Aim for kings** - Kings are more powerful pieces
+4. **Control the center** - Center squares give you more movement options
+5. **Force captures** - Set up situations where your opponent must move into danger
+
+## Game Variations (This Implementation)
+
+This version has modified rules from standard Checkers:
+- Kings are created when reaching the opponent's end
+- Triple Kings are created when crossing back to your side
+- Game ends when one player captures 12 pieces
+- Movement rules may differ from traditional Checkers
+
+Enjoy playing Checkers!

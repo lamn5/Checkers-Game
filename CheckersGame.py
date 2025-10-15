@@ -2,7 +2,7 @@
 # Author: Noddy Lam
 # GitHub username: lamn5
 # Date: 03/19/2023
-# Description: The program contains a Checkers game that takes two players and allows them to play the game.
+# Description: The program contains a Checkers game that takes two players and allows them to play the game. Future Updates to better the game include: Missing negative index validation - Doesn't check for negative coordinates, No movement rules validation - Doesn't enforce diagonal movement or proper direction
 
 class OutofTurn(Exception):
     """Error raised when a player attempts to move out of turn"""
@@ -74,16 +74,19 @@ class Checkers:
         """
 
         # if player name is not valid, raise error
-        for name in self._players:
-            if player_name not in self._players:
-                raise InvalidPlayer
-        # if the previous player is same as player now, raise error
+        if player_name not in self._players:
+            raise InvalidPlayer
+        # if the previous player is same as player now, raise OutofTurn error
         if self.get_previous_player() == player_name:
             raise OutofTurn
         self.set_previous_player(player_name)
 
         # if the players piece color does not equal to its starting square location, raise error
-        if self._players[player_name] != self.get_checker_details(starting_square_location):
+        piece_at_start = self.get_checker_details(starting_square_location)
+        if piece_at_start is None:
+            raise InvalidSquareError
+        # Check if piece belongs to player (handles regular pieces, kings, and triple kings)
+        if not piece_at_start.startswith(self._players[player_name]):
             raise InvalidSquareError
         # if there is something at destination then raise error
         if self.get_checker_details(destination_square_location) != None:
@@ -98,8 +101,11 @@ class Checkers:
         if end_row_num > len(self._board) - 1 or end_col_num > len(self._board) - 1:
             raise InvalidSquareError
 
+        # Get the piece that's moving
+        moving_piece = self._board[start_row_num][start_col_num]
+
         self._board[start_row_num][start_col_num] = None
-        self._board[end_row_num][end_col_num] = self._players[player_name]
+        self._board[end_row_num][end_col_num] = moving_piece
 
         if self._players[player_name] == "Black":
             if start_row_num - end_row_num == 2:  # if the piece skipped a row
@@ -110,8 +116,10 @@ class Checkers:
                     self._board[start_row_num - 1][start_col_num + 1] = None
                     self._captured_pieces_dict[player_name] += 1
             if end_row_num == 0:        # Turns into king
+                self._board[end_row_num][end_col_num] = "Black_king"
                 self._king_count_dict[player_name] += 1
             if end_row_num == 7:            # Turns into triple king
+                self._board[end_row_num][end_col_num] = "Black_Triple_King"
                 self._triple_king_count_dict[player_name] += 1
 
         if self._players[player_name] == "White":
@@ -123,8 +131,10 @@ class Checkers:
                     self._board[start_row_num + 1][start_col_num - 1] = None
                     self._captured_pieces_dict[player_name] += 1
             if end_row_num == 7:            # Turns into king
+                self._board[end_row_num][end_col_num] = "White_king"
                 self._king_count_dict[player_name] += 1
             if end_row_num == 0:            # Turns into triple king
+                self._board[end_row_num][end_col_num] = "White_Triple_King"
                 self._triple_king_count_dict[player_name] += 1
 
         if self._captured_pieces_dict[player_name] == 12:
@@ -147,7 +157,6 @@ class Checkers:
 
         Returns what piece is at the square location.
         """
-        # ! NEED TO FIX
         row_num = int(square_location[0])
         col_num = int(square_location[1])
         if row_num > len(self._board) - 1 or col_num > len(self._board) - 1:
@@ -210,20 +219,3 @@ class Player:
         Gets total amount of captured pieces that the player have done.
         """
         return self._game._captured_pieces_dict[self._player_name]
-
-
-game = Checkers()
-Player1 = game.create_player("Noddy", "Black")
-Player2 = game.create_player("Bob", "White")
-name1 = game.get_player_name(Player1)
-name2 = game.get_player_name(Player2)
-print(f"Player names: {name1}, {name2}")
-# game.print_board()
-# game.get_checker_details((3, 1))
-
-# Player1.get_king_count()
-# Player1.get_triple_king_count()
-captured_pieces = Player1.get_captured_pieces_count()
-print(captured_pieces)
-king_count = Player1.get_king_count()
-print(king_count)

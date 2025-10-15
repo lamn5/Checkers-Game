@@ -9,18 +9,20 @@ Checkers is a two-player strategy board game played on an 8x8 board. One player 
 ## Setup
 
 The game board is set up with:
-- **White pieces** on rows 0-2 (top of the board)
-- **Black pieces** on rows 5-7 (bottom of the board)
-- Pieces are placed on alternating squares (checkerboard pattern)
-- **Black always moves first**
+
+-   **White pieces** on rows 0-2 (top of the board)
+-   **Black pieces** on rows 5-7 (bottom of the board)
+-   Pieces are placed on alternating squares (checkerboard pattern)
+-   **Black always moves first**
 
 ## Board Coordinates
 
 The board uses coordinate system (row, column) where:
-- Rows and columns are numbered 0-7
-- Example: `(5, 0)` means row 5, column 0
-- Top-left corner is `(0, 0)`
-- Bottom-right corner is `(7, 7)`
+
+-   Rows and columns are numbered 0-7
+-   Example: `(5, 0)` means row 5, column 0
+-   Top-left corner is `(0, 0)`
+-   Bottom-right corner is `(7, 7)`
 
 ```
    0   1   2   3   4   5   6   7
@@ -41,42 +43,51 @@ B = Black piece
 ## Basic Rules
 
 ### 1. **Taking Turns**
-- Black player moves first
-- Players alternate turns
-- You cannot move twice in a row
+
+-   Black player moves first
+-   Players alternate turns
+-   You cannot move twice in a row
 
 ### 2. **Regular Piece Movement**
-- Regular pieces move **diagonally forward** one square
-- Black pieces move toward row 0 (upward)
-- White pieces move toward row 7 (downward)
-- You can only move to empty squares
+
+-   Regular pieces move **diagonally forward** one square
+-   Black pieces move toward row 0 (upward)
+-   White pieces move toward row 7 (downward)
+-   You can only move to empty squares
 
 ### 3. **Capturing Pieces**
-- Jump over an opponent's piece diagonally to capture it
-- The jumped piece is removed from the board
-- Captures move 2 rows diagonally (skipping the opponent's piece)
-- You can capture left or right diagonally
+
+-   Jump over an opponent's piece diagonally to capture it
+-   The jumped piece is removed from the board
+-   Captures move 2 rows diagonally (skipping the opponent's piece)
+-   You can capture left or right diagonally
 
 **Example Capture:**
+
 ```
 Black at (4, 1) can capture White at (3, 2) by jumping to (2, 3)
 ```
 
 ### 4. **King Pieces**
+
 When a piece reaches the opposite end of the board:
-- **Black piece reaching row 0** → becomes a **King**
-- **White piece reaching row 7** → becomes a **King**
+
+-   **Black piece reaching row 0** → becomes a **King**
+-   **White piece reaching row 7** → becomes a **King**
 
 Kings have special abilities (can move in different directions).
 
 ### 5. **Triple King Pieces**
+
 If a piece crosses back to its original side:
-- **Black King reaching row 7** → becomes a **Triple King**
-- **White King reaching row 0** → becomes a **Triple King**
+
+-   **Black King reaching row 7** → becomes a **Triple King**
+-   **White King reaching row 0** → becomes a **Triple King**
 
 Triple Kings have even more powerful abilities.
 
 ### 6. **Winning the Game**
+
 The first player to **capture 12 opponent pieces wins** the game!
 
 ## How to Play (Code Example)
@@ -184,24 +195,30 @@ print(f"Game status: {game.game_winner()}")
 ## Common Errors
 
 ### OutofTurn
+
 **Error:** A player tries to move when it's not their turn
+
 ```python
 game.play_game("Alice", (5, 0), (4, 1))
 game.play_game("Alice", (5, 2), (4, 3))  # ERROR: Alice just moved!
 ```
 
 ### InvalidPlayer
+
 **Error:** Player name doesn't exist
+
 ```python
 game.play_game("Charlie", (5, 0), (4, 1))  # ERROR: Charlie not created!
 ```
 
 ### InvalidSquare
+
 **Error:** Invalid move attempted
-- Moving from an empty square
-- Moving an opponent's piece
-- Moving to an occupied square
-- Moving outside the board (coordinates > 7 or < 0)
+
+-   Moving from an empty square
+-   Moving an opponent's piece
+-   Moving to an occupied square
+-   Moving outside the board (coordinates > 7 or < 0)
 
 ```python
 game.play_game("Alice", (3, 3), (4, 4))  # ERROR: No piece at (3,3)
@@ -219,9 +236,13 @@ game.play_game("Alice", (2, 1), (3, 0))  # ERROR: (2,1) has White piece, not Bla
 ## Game Variations (This Implementation)
 
 This version has modified rules from standard Checkers:
-- Kings are created when reaching the opponent's end
-- Triple Kings are created when crossing back to your side
-- Game ends when one player captures 12 pieces
-- Movement rules may differ from traditional Checkers
 
-Enjoy playing Checkers!
+-   Kings are created when reaching the opponent's end
+-   Triple Kings are created when crossing back to your side
+-   Game ends when one player captures 12 pieces
+-   Movement rules may differ from traditional Checkers
+
+## Future Improvements
+
+-   Missing negative index validation - Doesn't check for negative coordinates
+-   No movement rules validation - Doesn't enforce diagonal movement or proper direction

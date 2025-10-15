@@ -9,7 +9,7 @@ class OutofTurn(Exception):
     pass
 
 
-class InvalidSquare(Exception):
+class InvalidSquareError(Exception):
     """Error raised when a player does not own the square or the location does not exist"""
     pass
 
@@ -29,8 +29,7 @@ class Checkers:
         Constructor for Checkers class. Takes no parameters. Initializes the board with the checkers in the correct positions. All data members are private.
         """
         self._board = [[None, "White", None, "White", None, "White", None, "White"],
-                       ["White", None, "White", None,
-                           "White", None, "White", None,],
+                       ["White", None, "White", None, "White", None, "White", None],
                        [None, "White", None, "White", None, "White", None, "White"],
                        [None, None, None, None, None, None, None, None],
                        [None, None, None, None, None, None, None, None],
@@ -58,7 +57,9 @@ class Checkers:
         self._piece_color = piece_color
         self._players[self._player_name] = self._piece_color
         self._captured_pieces_dict[player_name] = 0
-        return Player(self._player_name, self._piece_color)
+        self._king_count_dict[player_name] = 0
+        self._triple_king_count_dict[player_name] = 0
+        return Player(self._player_name, self._piece_color, self)
 
     def play_game(self, player_name, starting_square_location, destination_square_location):
         """
@@ -83,19 +84,19 @@ class Checkers:
 
         # if the players piece color does not equal to its starting square location, raise error
         if self._players[player_name] != self.get_checker_details(starting_square_location):
-            raise InvalidSquare
+            raise InvalidSquareError
         # if there is something at destination then raise error
         if self.get_checker_details(destination_square_location) != None:
-            raise InvalidSquare
+            raise InvalidSquareError
         # if square location doesn't exist, raise error
         start_row_num = int(starting_square_location[0])
         start_col_num = int(starting_square_location[1])
         if start_row_num > len(self._board) - 1 or start_col_num > len(self._board) - 1:
-            raise InvalidSquare
+            raise InvalidSquareError
         end_row_num = int(destination_square_location[0])
         end_col_num = int(destination_square_location[1])
         if end_row_num > len(self._board) - 1 or end_col_num > len(self._board) - 1:
-            raise InvalidSquare
+            raise InvalidSquareError
 
         self._board[start_row_num][start_col_num] = None
         self._board[end_row_num][end_col_num] = self._players[player_name]
@@ -146,10 +147,11 @@ class Checkers:
 
         Returns what piece is at the square location.
         """
+        # ! NEED TO FIX
         row_num = int(square_location[0])
         col_num = int(square_location[1])
         if row_num > len(self._board) - 1 or col_num > len(self._board) - 1:
-            raise InvalidSquare
+            raise InvalidSquareError
         else:
             return self._board[row_num][col_num]
 
@@ -164,8 +166,8 @@ class Checkers:
         Prints out the current board as a form of array.
         Purpose of this method is to see what the board looks like at the moment.
         """
-        print(self._board)
-        return
+        for row in self._board:
+            print(row)
 
     def game_winner(self):
         """
@@ -183,27 +185,45 @@ class Player:
     Player class to represent each player that is playing the game. Contains information such as the player's name and its piece color. Used by the Checkers class.
     """
 
-    def __init__(self, player_name, piece_color):
+    def __init__(self, player_name, piece_color, game):
         """
         Constructor for Player class. Takes no parameters. Initializes the player's name and piece color. All data members are private.
         """
         self._player_name = player_name
         self._piece_color = piece_color
+        self._game = game
 
     def get_king_count(self):
         """
         Gets total amount of king pieces that the player have on the board. 
         """
-        return self._king_count_dict[self._player_name]
+        return self._game._king_count_dict[self._player_name]
 
     def get_triple_king_count(self):
         """
-        Gets total amount of triple king pieces that the player have on the board. 
+        Gets total amount of triple king pieces that the player have on the board.
         """
-        return self._triple_king_count_dict[self._player_name]
+        return self._game._triple_king_count_dict[self._player_name]
 
-    def captured_pieces_count(self):
+    def get_captured_pieces_count(self):
         """
-        Gets total amount of captured pieces that the player have done. 
+        Gets total amount of captured pieces that the player have done.
         """
-        return self._captured_pieces_dict[self._player_name]
+        return self._game._captured_pieces_dict[self._player_name]
+
+
+game = Checkers()
+Player1 = game.create_player("Noddy", "Black")
+Player2 = game.create_player("Bob", "White")
+name1 = game.get_player_name(Player1)
+name2 = game.get_player_name(Player2)
+print(f"Player names: {name1}, {name2}")
+# game.print_board()
+# game.get_checker_details((3, 1))
+
+# Player1.get_king_count()
+# Player1.get_triple_king_count()
+captured_pieces = Player1.get_captured_pieces_count()
+print(captured_pieces)
+king_count = Player1.get_king_count()
+print(king_count)
